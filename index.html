@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MG1999 Probability Simulator</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-[#121212] text-white min-h-screen">
+  <div id="app" class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-[#1E1E1E] bg-opacity-90 backdrop-blur-md shadow-lg py-4">
+      <div class="container mx-auto px-4 flex justify-between items-center">
+        <div class="flex items-center">
+          <div class="w-10 h-10 rounded-lg bg-[#7C4DFF] flex items-center justify-center mr-3">
+            <i class="fas fa-dice text-white"></i>
+          </div>
+          <div>
+            <h1 class="font-['Poppins'] font-bold text-xl">MG1999 Probability Simulator</h1>
+            <p class="text-xs text-gray-400">Interactive Probability Visualization Tool</p>
+          </div>
+        </div>
+        
+        <div class="sound-toggle">
+          <button id="soundToggle" class="w-8 h-8 rounded-full bg-[#1E1E1E] border border-gray-700 flex items-center justify-center">
+            <i class="fas fa-volume-up text-[#7C4DFF]"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="flex-1 container mx-auto px-4 py-8">
+      <div class="grid grid-cols-12 gap-8">
+        <!-- Simulation Controls -->
+        <section class="col-span-12 lg:col-span-3 bg-[#1E1E1E] bg-opacity-80 backdrop-blur-md border border-[rgba(255,255,255,0.1)] rounded-xl p-4 mb-6 shadow-lg">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="font-['Poppins'] font-semibold text-xl">Simulation</h2>
+          </div>
+          
+          <div class="flex bg-[#1E1E1E] rounded-lg p-1 mb-4">
+            <button
+              id="diceTab"
+              class="flex-1 py-2 rounded-md text-sm font-medium bg-[#7C4DFF] text-white"
+            >
+              <i class="fas fa-dice mr-1"></i> Dice
+            </button>
+            <button
+              id="coinTab"
+              class="flex-1 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-[#2A2A2A]"
+            >
+              <i class="fas fa-coins mr-1"></i> Coin
+            </button>
+            <button
+              id="wheelTab"
+              class="flex-1 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white hover:bg-[#2A2A2A]"
+            >
+              <i class="fas fa-sync-alt mr-1"></i> Wheel
+            </button>
+          </div>
+          
+          <!-- Simulation Components -->
+          <div id="simulationContainer" class="mb-6">
+            <!-- Dice Simulation (Default Active) -->
+            <div id="diceSimulation" class="space-y-4">
+              <div class="dice-container flex justify-center items-center h-48">
+                <!-- Pure CSS 3D Dice -->
+                <div 
+                  id="dice"
+                  class="dice"
+                  style="transform-style: preserve-3d; width: 100px; height: 100px; position: relative; transition: transform 0.3s ease-out;"
+                >
+                  <!-- Face 1 (front) -->
+                  <div class="dice-face absolute w-full h-full bg-white border-2 border-gray-400 rounded-lg flex justify-center items-center">
+                    <div class="dice-dot w-6 h-6 bg-black rounded-full"></div>
+                  </div>
+                  
+                  <!-- Face 6 (back) -->
+                  <div class="dice-face absolute w-full h-full bg-white border-2 border-gray-400 rounded-lg">
+                    <div class="grid grid-cols-2 gap-3 p-4 h-full">
+                      <div class="dice-dot w-4 h-4 bg-black rounded-full"></div>
+                      <div class="dice-dot w-4 h-4 bg-black rounded-full"></div>
+                      <div class="dice-dot w-4 h-4 bg-black rounded-full"></div>
+                      <div class="dice-dot w-4 h-4 bg-black rounded-full"></div>
+                      <div class="dice-dot w-4 h-4 bg-black rounded-full"></div>
+                      <div class="dice-dot w-4 h-4 bg-black rounded-full"></div>
+                    </div>
+                  </div>
+                  
+                  <!-- Face 2 (top) -->
+                  <div class="dice-face absolute w-full h-full bg-white border-2 border-gray-400 rounded-lg">
+                    <div class="flex justify-between p-5 h-full">
+                      <div class="dice-dot w-5 h-5 bg-black rounded-full self-start"></div>
+                      <div class="dice-dot w-5 h-5 bg-black rounded-full self-end"></div>
+                    </div>
+                  </div>
+                  
+                  <!-- Face 5 (bottom) -->
+                  <div class="dice-face absolute w-full h-full bg-white border-2 border-gray-400 rounded-lg">
+                    <div class="grid grid-cols-2 gap-2 p-4 h-full">
+                      <div class="dice-dot w-4 h-4 bg-black rounded-full"></div>
+                      <div class="dice-dot w-4 h-4 bg-black rounded-full"></div>
+                      <div class="dice-dot w-4 h-4 bg-black rounded-full col-span-2 justify-self-center self-center"></div>
+                      <div class="dice-dot w-4 h-4 bg-black rounded-full"></div>
+                      <div class="dice-dot w-4 h-4 bg-black rounded-full"></div>
+                    </div>
+                  </div>
+                  
+                  <!-- Face 3 (right) -->
+                  <div class="dice-face absolute w-full h-full bg-white border-2 border-gray-400 rounded-lg">
+                    <div class="flex flex-col justify-between p-5 h-full">
+                      <div class="dice-dot w-5 h-5 bg-black rounded-full self-end"></div>
+                      <div class="dice-dot w-5 h-5 bg-black rounded-full self-center"></div>
+                      <div class="dice-dot w-5 h-5 bg-black rounded-full self-start"></div>
+                    </div>
+                  </div>
+                  
+                  <!-- Face 4 (left) -->
+                  <div class="dice-face absolute w-full h-full bg-white border-2 border-gray-400 rounded-lg">
+                    <div class="grid grid-cols-2 gap-4 p-4 h-full">
+                      <div class="dice-dot w-5 h-5 bg-black rounded-full"></div>
+                      <div class="dice-dot w-5 h-5 bg-black rounded-full"></div>
+                      <div class="dice-dot w-5 h-5 bg-black rounded-full"></div>
+                      <div class="dice-dot w-5 h-5 bg-black rounded-full"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center mb-4">
+                <div id="diceResult" class="text-4xl font-bold font-mono text-[#7C4DFF]">?</div>
+                <div class="text-sm text-gray-400">Current Result</div>
+              </div>
+
+              <button 
+                id="rollDiceBtn"
+                class="w-full py-3 rounded-lg font-semibold transition-colors bg-[#7C4DFF] hover:bg-purple-600"
+              >
+                <i class="fas fa-dice mr-2"></i> Roll Dice
+              </button>
+            </div>
+            
+            <!-- Coin Simulation (Hidden by Default) -->
+            <div id="coinSimulation" class="space-y-4 hidden">
+              <div class="flex justify-center items-center h-48">
+                <div
+                  id="coin"
+                  class="coin w-32 h-32 relative"
+                  style="transform-style: preserve-3d; transition: transform 0.3s ease-out;"
+                >
+                  <!-- Heads -->
+                  <div class="coin-face absolute w-full h-full rounded-full bg-yellow-400 border-4 border-yellow-600 flex items-center justify-center"
+                       style="transform: translateZ(2px);">
+                    <div class="coin-face-inner w-5/6 h-5/6 rounded-full bg-gradient-to-br from-yellow-300 to-yellow-500 flex items-center justify-center">
+                      <div class="text-yellow-800 text-lg font-bold">H</div>
+                    </div>
+                  </div>
+                  
+                  <!-- Tails -->
+                  <div class="coin-face absolute w-full h-full rounded-full bg-yellow-600 border-4 border-yellow-700 flex items-center justify-center"
+                       style="transform: rotateY(180deg) translateZ(2px);">
+                    <div class="coin-face-inner w-5/6 h-5/6 rounded-full bg-gradient-to-br from-yellow-500 to-yellow-700 flex items-center justify-center">
+                      <div class="text-yellow-200 text-lg font-bold">T</div>
+                    </div>
+                  </div>
+                  
+                  <!-- Edge -->
+                  <div class="coin-edge absolute w-full h-full rounded-full"
+                       style="transform: rotateX(90deg); background: linear-gradient(to right, #f59e0b, #b45309, #f59e0b, #b45309, #f59e0b); background-size: 100% 4px;">
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center mb-4">
+                <div id="coinResult" class="text-4xl font-bold font-mono text-[#7C4DFF]">?</div>
+                <div class="text-sm text-gray-400">Current Result</div>
+              </div>
+
+              <button 
+                id="flipCoinBtn"
+                class="w-full py-3 rounded-lg font-semibold transition-colors bg-[#7C4DFF] hover:bg-purple-600"
+              >
+                <i class="fas fa-coins mr-2"></i> Flip Coin
+              </button>
+            </div>
+            
+            <!-- Wheel Simulation (Hidden by Default) -->
+            <div id="wheelSimulation" class="space-y-4 hidden">
+              <div class="flex justify-center items-center h-64 relative">
+                <!-- Pointer -->
+                <div
+                  class="absolute w-6 h-10 bg-red-500 z-10"
+                  style="clip-path: polygon(50% 0%, 0% 100%, 100% 100%); top: 10px; left: calc(50% - 12px);"
+                ></div>
+                
+                <!-- Wheel - using canvas for more reliable rendering -->
+                <div 
+                  id="wheel"
+                  class="relative w-64 h-64"
+                  style="transform: rotate(0deg); transition: none; transform-origin: center center;"
+                >
+                  <canvas 
+                    id="wheelCanvas"
+                    width="256"
+                    height="256"
+                    class="rounded-full"
+                  ></canvas>
+                </div>
+              </div>
+
+              <div class="text-center mb-4">
+                <div id="wheelResult" class="text-4xl font-bold font-mono text-[#7C4DFF]">?</div>
+                <div class="text-sm text-gray-400">Current Result</div>
+              </div>
+
+              <button 
+                id="spinWheelBtn"
+                class="w-full py-3 rounded-lg font-semibold transition-colors bg-[#7C4DFF] hover:bg-purple-600"
+              >
+                <i class="fas fa-sync-alt mr-2"></i> Spin Wheel
+              </button>
+            </div>
+          </div>
+          
+          <div class="bg-[#1E1E1E] p-3 rounded-lg">
+            <h3 class="text-gray-300 text-sm mb-2">Batch Simulations</h3>
+            <div class="grid grid-cols-3 gap-2">
+              <button id="simulate10" class="py-2 bg-[#2A2A2A] hover:bg-[#3A3A3A] rounded-md text-sm">10x</button>
+              <button id="simulate50" class="py-2 bg-[#2A2A2A] hover:bg-[#3A3A3A] rounded-md text-sm">50x</button>
+              <button id="simulate100" class="py-2 bg-[#2A2A2A] hover:bg-[#3A3A3A] rounded-md text-sm">100x</button>
+            </div>
+            <p class="text-xs text-gray-500 mt-2">
+              Quickly run multiple simulations to gather statistical data.
+            </p>
+          </div>
+        </section>
+        
+        <!-- Statistics Panel -->
+        <section id="statisticsPanel" class="col-span-12 lg:col-span-5 bg-[#1E1E1E] bg-opacity-80 backdrop-blur-md border border-[rgba(255,255,255,0.1)] rounded-xl p-4 mb-6 shadow-lg">
+          <h2 class="font-['Poppins'] font-semibold text-xl mb-4">Statistics</h2>
+          
+          <div class="flex border-b border-gray-700 mb-4">
+            <button id="diceStatsTab" class="py-2 px-4 font-medium text-[#7C4DFF] border-b-2 border-[#7C4DFF]">
+              <i class="fas fa-dice mr-2"></i> Dice
+            </button>
+            <button id="coinStatsTab" class="py-2 px-4 font-medium text-gray-400">
+              <i class="fas fa-coins mr-2"></i> Coin
+            </button>
+            <button id="wheelStatsTab" class="py-2 px-4 font-medium text-gray-400">
+              <i class="fas fa-sync-alt mr-2"></i> Wheel
+            </button>
+          </div>
+          
+          <div id="statsContent">
+            <!-- Stats will be filled by JavaScript -->
+            <div class="bg-[#1E1E1E] p-4 rounded-lg text-center text-gray-400 h-64 flex items-center justify-center">
+              <div>
+                <i class="fas fa-chart-bar text-4xl mb-3"></i>
+                <p>No statistics available yet.<br/>Run some simulations!</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- History Panel -->
+        <section id="historyPanel" class="col-span-12 lg:col-span-4 bg-[#1E1E1E] bg-opacity-80 backdrop-blur-md border border-[rgba(255,255,255,0.1)] rounded-xl p-5 mb-6 shadow-lg">
+          <h2 class="font-['Poppins'] font-semibold text-2xl mb-4">History</h2>
+          
+          <div class="flex justify-between items-center mb-3">
+            <div class="text-sm text-gray-400">Latest Results</div>
+            <button 
+              id="clearHistoryBtn"
+              class="text-xs px-3 py-1.5 bg-[#1E1E1E] hover:bg-[#2A2A2A] rounded transition-colors"
+            >
+              <i class="fas fa-trash-alt mr-1"></i> Clear
+            </button>
+          </div>
+          
+          <div id="historyList" class="overflow-y-auto h-[calc(100vh-18rem)] space-y-3 scrollbar-thin scrollbar-thumb-[#7C4DFF] scrollbar-track-[#1E1E1E] pr-1">
+            <div class="bg-[#1E1E1E] p-6 rounded-lg text-center text-gray-400">
+              <i class="fas fa-info-circle mr-2"></i>
+              No history yet. Run some simulations!
+            </div>
+          </div>
+          
+          <div class="mt-4 space-y-4">
+            <div>
+              <h3 class="font-['Poppins'] text-lg mb-2">Summary</h3>
+              <div class="bg-[#1E1E1E] p-3 rounded-lg">
+                <div class="flex justify-between mb-2">
+                  <span class="text-sm text-gray-400">Total Simulations:</span>
+                  <span id="totalSimulations" class="font-mono font-bold">0</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-sm text-gray-400">Simulation Time:</span>
+                  <span id="simulationTime" class="font-mono font-bold">0s</span>
+                </div>
+              </div>
+            </div>
+            
+            <button 
+              id="exportDataBtn"
+              disabled
+              class="w-full py-2 border border-gray-700 rounded-lg font-semibold transition-colors bg-gray-800 text-gray-500 cursor-not-allowed"
+            >
+              <i class="fas fa-download mr-2"></i> Export Results
+            </button>
+          </div>
+        </section>
+      </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-[#1E1E1E] py-4 mt-auto">
+      <div class="container mx-auto px-4 text-center text-gray-400 text-sm">
+        <p>MG1999 Probability Simulator &copy; 2025 | Interactive Educational Tool</p>
+        <p class="mt-1 text-xs">Designed for educational purposes</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Script -->
+  <script src="script.js"></script>
+</body>
+</html>
